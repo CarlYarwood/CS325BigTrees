@@ -3,7 +3,8 @@ class Clade:
         self.child1 = child1
         self.child2 = child2
         self.distance = distance
-        return
+
+    
     def getChild1Type():
         return type(self.child1)
     def getChild2Type():
@@ -12,5 +13,8 @@ class Clade:
 class Leaf:
     def __init__(self, seqNum):
         self.seqNum = seqNum
-        return
+
+    
+    def getSeqNum():
+        return self.seqNum
     
