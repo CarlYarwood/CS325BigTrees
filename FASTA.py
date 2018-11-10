@@ -64,3 +64,11 @@ def readfasta(filename):
     resultList.append([label, sequence])
     return resultList
 
+
+def getSeq(fileName):
+    temp = readfasta(fileName)
+    seq = []
+    for i in temp:
+        seq.append(i[1])
+    return seq
+
