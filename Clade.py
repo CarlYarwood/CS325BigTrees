@@ -5,9 +5,9 @@ class Clade:
         self.distance = distance
 
     
-    def getChild1Type():
+    def getChild1Type(self):
         return type(self.child1)
-    def getChild2Type():
+    def getChild2Type(self):
         return type(self.child2)
 
 class Leaf:
@@ -15,6 +15,6 @@ class Leaf:
         self.seqNum = seqNum
 
     
-    def getSeqNum():
+    def getSeqNum(self):
         return self.seqNum
     
