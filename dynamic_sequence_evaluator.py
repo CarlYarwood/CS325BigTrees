@@ -19,46 +19,32 @@ mismatch_penalty = -4
 match_bonus = 5
 
 '''
-The main method acts as a way to execute all the code on any hard coded
-sequence. Much of this code was written for the functions to be used
-elsewhere so values were assumed to be provided.
+The dynamicAlignment method acts as a way to execute all the code on 
+any hard coded sequence. Much of this code was written for 
+the functions to be used elsewhere so values were assumed to be provided.
 '''
 
-def main():
+def dynamicAlignment(seq1, seq2):
     
-
-    queary_list = ['-TATAAAA','-ATCGAT','-CAGCTG', '-GGTAAGT', '-GGTGAGT',
-                   'GTAA','GTGA']
-
-    seq = '-ACAGTA'
-    queary_list = ['-CAGC']
-    
-    score_list = []
-
-    for i in range(len(queary_list)):
-
-        queary = queary_list[i]
+##
+##    for i in range(len(queary_list)):
+##
+##        queary = queary_list[i]
         
-        gene_comparison_matrix = initialize_gene_comparison_matrix\
-                                 (seq, queary)
-        gene_comparison_matrix = fill_gene_comparison_matrix\
-                             (gene_comparison_matrix, seq, queary)
+    gene_comparison_matrix = initialize_gene_comparison_matrix\
+                             (seq1, seq2)
+    gene_comparison_matrix = fill_gene_comparison_matrix\
+                         (gene_comparison_matrix, seq1, seq2)
 
-        traceback_data = traceback(gene_comparison_matrix, seq, queary)
+    traceback_data = traceback(gene_comparison_matrix, seq1, seq2)
 
-        traceback_value = traceback_data[0]
-        traceback_startpoint = traceback_data[1]
-        traceback_endpoint = traceback_data[2]
+    traceback_value = traceback_data[0]
+    traceback_startpoint = traceback_data[1]
+    traceback_endpoint = traceback_data[2]
 
-        max_score = (len(queary) - 1) * match_bonus
-        score = traceback_value/max_score
-        score_list.append(score)
+    print(gene_comparison_matrix)
 
-        print(gene_comparison_matrix)
 
-        if (score >= .8):
-            find_codon(seq, traceback_startpoint, traceback_endpoint)
-    
 '''
 Initializes a global alignment matrix.
 
@@ -125,63 +111,89 @@ def fill_gene_comparison_matrix(gene_comparison_matrix, seq, queary):
 
 
 '''
-This runs a semi-global traceback on a passed in 2D numpy array
+This runs a global traceback on a passed in 2D numpy array
 
 Parameters: gene_comparison_matrix (2D numpy array) the 2d array being traced
-            seq (string) the length of the string is used for iterators
-            queary (string) the length of the string is used for iterators
+            seq1 (string) the length of the string is used for iterators
+            seq2 (string) the length of the string is used for iterators
 
 Returns a list of traceback data. This list contains the score of the trace
-the starting position of the trace, and the end position of the trace. 
+seq1 with added in gaps, and seq2 with added in gaps. 
 '''
 
-def traceback(gene_comparison_matrix, seq, queary):
+def traceback(gene_comparison_matrix, seq1, seq2): 
+             
+    y_coordinate = len(seq1) - 1
+    x_coordinate = len(seq2) - 1
+    traceback_value = gene_comparison_matrix[ y_coordinate]\
+                      [x_coordinate]
+    index = 0
+    while True:
+        print("x_coordinate = " + str(x_coordinate) + " y_coordinate = " + str(y_coordinate))
+        current_score = gene_comparison_matrix[y_coordinate][x_coordinate]
+        
+        if(x_coordinate != 0 and y_coordinate !=0):
+            left_score = gene_comparison_matrix[y_coordinate]\
+                         [x_coordinate - 1]
+            upper_score = gene_comparison_matrix[y_coordinate - 1]\
+                          [x_coordinate]
+            diagonal_score = gene_comparison_matrix[y_coordinate - 1]\
+            [x_coordinate -1]
+        else:
+            #end condition
+            if(x_coordinate == 0 and y_coordinate == 0):
+                print("Seq1 = " + seq1)
+                print("Seq2 = " + seq2)
+                print(str(index))
+                return [traceback_value, seq1, seq2]
+            #only move up
+            elif(x_coordinate == 0 and y_coordinate != 0):
+                upper_score = gene_comparison_matrix[y_coordinate - 1]\
+                          [x_coordinate]
+                left_score = upper_score - 1
+                diagonal_score = upper_score -1
+                print("Current score = " + str(current_score))
+                print("Upper score = " + str(upper_score))
+            #only move right
+            elif(x_coordinate != 0 and y_coordinate == 0):
+                left_score = gene_comparison_matrix[y_coordinate]\
+                         [x_coordinate - 1]
+                upper_score = left_score - 1
+                diagonal_score = left_score - 1
+                print("Enter the zero condition2")
 
-    start_coordinate = 0
-
-    for i in range(len(seq)):
-
-         dummy = gene_comparison_matrix[i][len(queary) - 1]
-
-         if( dummy >
-             gene_comparison_matrix[start_coordinate][len(queary) - 1] ):
-             start_coordinate = i
-
-    traceback_value = gene_comparison_matrix[start_coordinate]\
-                      [len(queary) - 1]
-                       
-
-    y_coordinate = start_coordinate
-    x_coordinate = len(queary) - 1
-    
-    while x_coordinate != 0 and y_coordinate != 0 :
-
-        left_score = gene_comparison_matrix[y_coordinate][x_coordinate - 1]
-        upper_score = gene_comparison_matrix[y_coordinate - 1][x_coordinate]
-        diagonal_score = gene_comparison_matrix[y_coordinate - 1]\
-        [x_coordinate -1]
-
-        max_value = max(left_score, upper_score, diagonal_score)
-
-        if((diagonal_score == left_score or diagonal_score == upper_score)
-            and max_value == diagonal_score):
-            y_coordinate = y_coordinate - 1
+        #move diagonal
+        if(current_score - diagonal_score == match_bonus):
             x_coordinate = x_coordinate - 1
+            y_coordinate = y_coordinate - 1
+            print("Move diag1")
+        elif(current_score - diagonal_score == mismatch_penalty):
+            x_coordinate = x_coordinate - 1
+            y_coordinate = y_coordinate - 1
+            print("Move diag2")
+        #move up
+        elif(current_score - upper_score == gap_penalty):
+            y_coordinate = y_coordinate - 1
+            print("Move up")
+        #move left
+        elif(current_score - left_score == gap_penalty):
+            x_coordinate = x_coordinate - 1
+            print("Move left")
+        else:
+            print("An error has occured")
+
+        index+= 1
+
+
+'''TODO
+The traceback is working but I need to figure out where to add the gaps, current thoughts
+first add gaps to the shorter string, then replace print statements with
+<approiate seq> = <approiate seq>[:index] + "-" + <approiate seq> [index:]
+This will add gaps at position index
+'''
             
-        elif(left_score == upper_score and left_score > diagonal_score):
-            y_coordinate = y_coordinate - 1
-
-        elif(left_score == max_value):
-            x_coordinate = x_coordinate - 1
-
-        elif(upper_score == max_value):
-            y_coordinate = y_coordinate - 1
-
-        elif(diagonal_score == max_value):
-            y_coordinate = y_coordinate - 1
-            x_coordinate = x_coordinate - 1
-            
-
-    return [traceback_value, start_coordinate, y_coordinate]
+def main():
+    print("Hello from main")
+    dynamicAlignment( "-ACAGTA","-CAGC")
 
 if __name__ == '__main__': main()
