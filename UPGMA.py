@@ -1,6 +1,16 @@
 import numpy as np
+import Clade from Clade
+import Leaf from Clade
 
-
+#this method is untested and cannot be truely tested until dynamic sequencing
+#is done
+def buildInitialScoreMatrix(allignedSeqs):
+    scoreMatrix = []
+    for i in range(len(allignedSeqs)):
+        scoreMatrix = []
+        for c in range(i+1,len(allignedSeqs)):
+            scoreMatrix[i].append(k2pScore(allignedSeqs[i], allignedSeqs[c]))
+    return scoreMatrix
 
 
 #I count the gaps just so that if we choose we can account for them
