@@ -1,6 +1,6 @@
 import numpy as np
-import Clade from Clade
-import Leaf from Clade
+from Clade import Clade
+from Clade import Leaf
 
 #this method is untested and cannot be truely tested until dynamic sequencing
 #is done
