@@ -3,9 +3,9 @@ import numpy as np
 '''
 The following program takes in a DNA sequence and returns likely open reading
 frames. To do this we first calculate the semi-global alignment of the frame
-and the queary in question. Then we calculate which frame has the highest
+and the query in question. Then we calculate which frame has the highest
 match based on the value of the frame and the closest match found with the
-given queary.
+given query.
 
 The penalties were chosen because they were the in class examples and that
 made it easier to debug my program.
@@ -16,7 +16,7 @@ gap_penalty = -7
 
 mismatch_penalty = -4
 
-match_bonus = 5
+match_bonus = 5 
 
 '''
 The main method acts as a way to execute all the code on any hard coded
@@ -27,30 +27,30 @@ elsewhere so values were assumed to be provided.
 def main():
     
 
-    queary_list = ['-TATAAAA','-ATCGAT','-CAGCTG', '-GGTAAGT', '-GGTGAGT',
+    query_list = ['-TATAAAA','-ATCGAT','-CAGCTG', '-GGTAAGT', '-GGTGAGT',
                    'GTAA','GTGA']
 
     seq = '-ACAGTA'
-    queary_list = ['-CAGC']
+    query_list = ['-CAGC']
     
     score_list = []
 
-    for i in range(len(queary_list)):
+    for i in range(len(query_list)):
 
-        queary = queary_list[i]
+        query = query_list[i]
         
         gene_comparison_matrix = initialize_gene_comparison_matrix\
-                                 (seq, queary)
+                                 (seq, query)
         gene_comparison_matrix = fill_gene_comparison_matrix\
-                             (gene_comparison_matrix, seq, queary)
+                             (gene_comparison_matrix, seq, query)
 
-        traceback_data = traceback(gene_comparison_matrix, seq, queary)
+        traceback_data = traceback(gene_comparison_matrix, seq, query)
 
         traceback_value = traceback_data[0]
         traceback_startpoint = traceback_data[1]
         traceback_endpoint = traceback_data[2]
 
-        max_score = (len(queary) - 1) * match_bonus
+        max_score = (len(query) - 1) * match_bonus
         score = traceback_value/max_score
         score_list.append(score)
 
@@ -63,14 +63,14 @@ def main():
 Initializes a global alignment matrix.
 
 Parameters: seq (string) this is the sequence to be matched.
-            queary (string) this is the string being compared to the sequence
+            query (string) this is the string being compared to the sequence
 
 Returns a 2D matrix with the first row and column filled with the gap penalty
 '''
 
 
-def initialize_gene_comparison_matrix(seq, queary):
-    gene_comparison_matrix = np.zeros([len(seq),len(queary)], dtype=int)
+def initialize_gene_comparison_matrix(seq, query):
+    gene_comparison_matrix = np.zeros([len(seq),len(query)], dtype=int)
 
     for i in range(len(seq)):
 
@@ -78,7 +78,7 @@ def initialize_gene_comparison_matrix(seq, queary):
             gene_comparison_matrix[i][0] = gene_comparison_matrix[i - 1][0] \
                                            + gap_penalty
 
-    for j in range(len(queary)):
+    for j in range(len(query)):
 
         if( j != 0 ):
             gene_comparison_matrix[0][j] = gene_comparison_matrix[0][j - 1] \
@@ -91,19 +91,19 @@ Fills global alignment matrix.
 
 Parameters: gene_comparison_matrix (2D numpy array) this is what is filled in
             seq (string) the length of the string is used for iterators
-            queary (string) the length of the string is used for iterators
+            query (string) the length of the string is used for iterators
 
 Returns a 2D matrix with every value filled in
 '''
 
-def fill_gene_comparison_matrix(gene_comparison_matrix, seq, queary):
+def fill_gene_comparison_matrix(gene_comparison_matrix, seq, query):
 
     left_score = 0
     upper_score = 0
     diagonal_score = 0
  
     for i in range(len(seq)):
-        for j in range(len(queary)):
+        for j in range(len(query)):
           
             if( i and j != 0):
 
@@ -111,7 +111,7 @@ def fill_gene_comparison_matrix(gene_comparison_matrix, seq, queary):
                 left_score = gene_comparison_matrix[i - 1][j]
                 diagonal_score = gene_comparison_matrix[i -1][j -1]
 
-                if( seq[i] == queary[j]):
+                if( seq[i] == query[j]):
                     gene_comparison_matrix[i][j] = \
                     max(left_score + gap_penalty, upper_score + gap_penalty,
                         diagonal_score + match_bonus)
@@ -129,30 +129,30 @@ This runs a semi-global traceback on a passed in 2D numpy array
 
 Parameters: gene_comparison_matrix (2D numpy array) the 2d array being traced
             seq (string) the length of the string is used for iterators
-            queary (string) the length of the string is used for iterators
+            query (string) the length of the string is used for iterators
 
 Returns a list of traceback data. This list contains the score of the trace
 the starting position of the trace, and the end position of the trace. 
 '''
 
-def traceback(gene_comparison_matrix, seq, queary):
+def traceback(gene_comparison_matrix, seq, query):
 
     start_coordinate = 0
 
     for i in range(len(seq)):
 
-         dummy = gene_comparison_matrix[i][len(queary) - 1]
+         dummy = gene_comparison_matrix[i][len(query) - 1]
 
          if( dummy >
-             gene_comparison_matrix[start_coordinate][len(queary) - 1] ):
+             gene_comparison_matrix[start_coordinate][len(query) - 1] ):
              start_coordinate = i
 
     traceback_value = gene_comparison_matrix[start_coordinate]\
-                      [len(queary) - 1]
+                      [len(query) - 1]
                        
 
     y_coordinate = start_coordinate
-    x_coordinate = len(queary) - 1
+    x_coordinate = len(query) - 1
     
     while x_coordinate != 0 and y_coordinate != 0 :
 
