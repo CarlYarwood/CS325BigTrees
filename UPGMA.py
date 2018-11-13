@@ -1,6 +1,6 @@
 import numpy as np
-import Clade from Clade
-import Leaf from Clade
+from Clade import Clade
+from Clade import Leaf 
 
 #this method is untested and cannot be truely tested until dynamic sequencing
 #is done
@@ -30,18 +30,18 @@ def k2pScore(allignedSeq1, allignedSeq2):
 
 def isTransition(base1, base2):
     if (isPurine(base1) and isPurine(base2)) or (isPyrimidine(base1) and isPyrimidine(base2)):
-        return true
+        return True
     else:
-        return false
+        return False
     return
 
 
 
 def isTransversion(base1, base2):
     if (isPurine(base1) and isPyrimidine(base2)) or (isPyrimidine(base1) and isPurine(base2)):
-        return true
+        return True
     else:
-        return false
+        return False
     return
 
 

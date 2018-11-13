@@ -25,8 +25,6 @@ elsewhere so values were assumed to be provided.
 '''
 
 def main():
-    
-
     query_list = ['-TATAAAA','-ATCGAT','-CAGCTG', '-GGTAAGT', '-GGTGAGT',
                    'GTAA','GTGA']
 
@@ -56,9 +54,12 @@ def main():
 
         print(gene_comparison_matrix)
 
+        print(traceback_startpoint)
+        print(traceback_endpoint)
+
         if (score >= .8):
             find_codon(seq, traceback_startpoint, traceback_endpoint)
-    
+            # TODO write find_codon 
 '''
 Initializes a global alignment matrix.
 
