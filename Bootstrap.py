@@ -87,6 +87,9 @@ def bootstrap_main(iter_num):
         i += 1 
     print()
 
-
-# TODO create function that runs throug original upgma tree collecting..
-# .. confidence levels per clade 
+'''
+TODO create function that runs throug original upgma tree collecting
+confidence levels per clade 
+each time a bootstrap tree is run, we need to check if any of the clades from
+the original tree are in there and add accordingly 
+'''
