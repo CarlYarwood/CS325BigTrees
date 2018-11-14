@@ -62,6 +62,31 @@ def get_column(fasta_list, index):
 
 
 '''
-boostrap_main - responsbile for 
+boostrap_main - responsbile for:
+0. running original UPGMA algorithm
+1. getting a bootstrap list of sequences
+2. running UPGMA on it 
+    - repeating the above until we hit iter_num
+3. creating a confidence tree that compares to 
 
+
+param -- iter_num: number of times we do steps one and two
+
+Returns: 
 '''
+def bootstrap_main(iter_num):
+    i = 0
+    bootstrap_list = []
+    while i < iter_num:
+
+        # execute steps 2 and 3
+        # compare it to what we found int step 0
+        # add to "confidence tree" ? 
+
+
+        i += 1 
+    print()
+
+
+# TODO create function that runs throug original upgma tree collecting..
+# .. confidence levels per clade 
