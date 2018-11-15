@@ -1,6 +1,7 @@
 import numpy as np
 from Clade import Clade
-from Clade import Leaf 
+from Clade import Leaf
+from dynamic_sequence_evaluator import dynamicAlignment
 #only half done, feel under the weather, need to write the part of the method
 #that puts together the new score matrix
 def UPGMA(allignedSeqs):
@@ -52,7 +53,8 @@ def buildInitialScoreMatrix(allignedSeqs):
     for i in range(len(allignedSeqs)):
         scoreMatrix.append([])
         for c in range(i,len(allignedSeqs)):
-            scoreMatrix[i].append(k2pScore(allignedSeqs[i], allignedSeqs[c]))
+            temp = dynamicAlignment(allignedSeqs[i], allignedSeqs[c]);#remove when global alignment is added
+            scoreMatrix[i].append(k2pScore(temp[0], temp[1])) #replace temp[0] with allignedSeqs[i] and temp[1] with allignedSeqs[c] when global allignment is added
             print(count)
             count = count+1
     return scoreMatrix
