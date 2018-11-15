@@ -1,7 +1,22 @@
 import numpy as np
 from Clade import Clade
 from Clade import Leaf 
-
+#only half done, feel under the weather, need to write the part of the method
+#that puts together the new score matrix
+def buildNextMatrix(scoreMatrix, CurrentCladesAndLeaves):
+    minimum = scoreMatrix[0][0]
+    row = 0
+    col = 0
+    for i in range(len(scoreMatrix)):
+        for c in range(len(scoreMatrix[i])):
+            if scoreMatrix[i][c] < minimum and i != c:
+                minimum = scoreMatrix[i][c]
+                row = i
+                col = c
+    NewClade = Clade(CurrentCladesAndLeaves[i], CurrentCladesAndLeaves[c], scoreMatrix[row][col])
+    CurrentCladesAndLeaves.remove(row)
+    CurrentCladesAndLeaves.remove(col)
+    CurrentCladesAndLeaves.insert(NewClade, newPos)
 #this method is untested and cannot be truely tested until dynamic sequencing
 #is done
 def buildInitialScoreMatrix(allignedSeqs):
