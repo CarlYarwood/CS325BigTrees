@@ -4,26 +4,39 @@ from Clade import Leaf
 #only half done, feel under the weather, need to write the part of the method
 #that puts together the new score matrix
 def buildNextMatrix(scoreMatrix, CurrentCladesAndLeaves):
-    minimum = scoreMatrix[0][0]
+    minimum = scoreMatrix[0][1]
     row = 0
-    col = 0
+    col = 1
     for i in range(len(scoreMatrix)):
         for c in range(len(scoreMatrix[i])):
             if scoreMatrix[i][c] < minimum and i != c:
                 minimum = scoreMatrix[i][c]
                 row = i
                 col = c
+    newScoreMatrix = []
+    for i in range(len(scoreMatrix)):
+        if i != max(row, col):
+            newScoreMatrix.append([])
+        for c in range(len(scoreMatrix[i])):
+            if (i == min(row,col) or c == min(row,col)):
+                newScoreMatrix.append(((CurrentCladesAndLeaves[col].weight * scoreMatrix[row][c]) + (CurrentCladesAndLeaves[col].weight *scoreMatrix[col][c]))/(CurrentCladesAndLeaves[row].weight + CurrentCladesAndLeaves[col].weight))
+            elif i != max(row,col) or c != max(row,col):
+                newScoreMatrix.append(scoreMatrix[i][c])        
     NewClade = Clade(CurrentCladesAndLeaves[i], CurrentCladesAndLeaves[c], scoreMatrix[row][col])
-    CurrentCladesAndLeaves.remove(row)
-    CurrentCladesAndLeaves.remove(col)
-    CurrentCladesAndLeaves.insert(NewClade, newPos)
+    CurrentCladesAndLeaves.remove(max(row,col))
+    CurrentCladesAndLeaves.remove(min(row,col))
+    CurrentCladesAndLeaves.insert(NewClade, min(row,col))
+    rv = []
+    rv.append(newScoreMatrix)
+    rv.append(CurrentCladesAndLeaves)
+    return rv
 #this method is untested and cannot be truely tested until dynamic sequencing
 #is done
 def buildInitialScoreMatrix(allignedSeqs):
     scoreMatrix = []
     for i in range(len(allignedSeqs)):
         scoreMatrix = []
-        for c in range(i+1,len(allignedSeqs)):
+        for c in range(i,len(allignedSeqs)):
             scoreMatrix[i].append(k2pScore(allignedSeqs[i], allignedSeqs[c]))
     return scoreMatrix
 
