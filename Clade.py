@@ -14,6 +14,11 @@ class Clade:
         self.child2.generateStringRep() + ")"
         return stringRep
     
+class Conf_Clade():
+    def __init__(self, clade, conf_val):
+        self.clade = clade
+        self.conf_val = conf_val
+
 
 class Leaf:
     def __init__(self, seqNum):

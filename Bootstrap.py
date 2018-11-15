@@ -15,7 +15,8 @@ Nov 12 2018
 '''
 
 import random
-
+from Clade import Clade
+from Clade import Leaf
 '''
 get_bootstrap_list - takes in an array of sequences that have already been aligned
 and samples accordingly until we have a new set of sequences the same 
@@ -85,7 +86,31 @@ def bootstrap_main(iter_num):
 
 
         i += 1 
+
+
+'''
+split - takes in a Clade and returns an
+array of string represenations of differents
+Param -- clade_str: the Clade
+Returns: an array of string representations for different leaves
+'''
+def split(clade):
     print()
+    
+
+
+
+'''
+Compare_Clades - takes in two clades
+- one clade is a confidence clade
+- The other clade is a normal clade
+
+'''
+
+
+
+
+
 
 '''
 TODO create function that runs throug original upgma tree collecting
