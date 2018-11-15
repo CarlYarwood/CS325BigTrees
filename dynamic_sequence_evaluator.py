@@ -39,10 +39,8 @@ def dynamicAlignment(seq1, seq2):
     traceback_data = traceback(gene_comparison_matrix, seq1, seq2)
 
     traceback_value = traceback_data[0]
-    traceback_startpoint = traceback_data[1]
-    traceback_endpoint = traceback_data[2]
-
-    print(gene_comparison_matrix)
+    aligned_seq1 = traceback_data[1]
+    aligned_seq2 = traceback_data[2]
 
 
 '''
@@ -125,11 +123,13 @@ def traceback(gene_comparison_matrix, seq1, seq2):
              
     y_coordinate = len(seq1) - 1
     x_coordinate = len(seq2) - 1
+    aligned_seq1 = seq1[1:len(seq1)]
+    aligned_seq2 = seq2[1:len(seq2)]
+    
     traceback_value = gene_comparison_matrix[ y_coordinate]\
                       [x_coordinate]
-    index = 0
     while True:
-        print("x_coordinate = " + str(x_coordinate) + " y_coordinate = " + str(y_coordinate))
+        print("X_coordinate = " + str(x_coordinate) + " y_coordinate = " + str(y_coordinate))
         current_score = gene_comparison_matrix[y_coordinate][x_coordinate]
         
         if(x_coordinate != 0 and y_coordinate !=0):
@@ -142,58 +142,42 @@ def traceback(gene_comparison_matrix, seq1, seq2):
         else:
             #end condition
             if(x_coordinate == 0 and y_coordinate == 0):
-                print("Seq1 = " + seq1)
-                print("Seq2 = " + seq2)
-                print(str(index))
-                return [traceback_value, seq1, seq2]
+                return [traceback_value, aligned_seq1, aligned_seq2]
             #only move up
             elif(x_coordinate == 0 and y_coordinate != 0):
                 upper_score = gene_comparison_matrix[y_coordinate - 1]\
                           [x_coordinate]
                 left_score = upper_score - 1
                 diagonal_score = upper_score -1
-                print("Current score = " + str(current_score))
-                print("Upper score = " + str(upper_score))
             #only move right
             elif(x_coordinate != 0 and y_coordinate == 0):
                 left_score = gene_comparison_matrix[y_coordinate]\
                          [x_coordinate - 1]
                 upper_score = left_score - 1
                 diagonal_score = left_score - 1
-                print("Enter the zero condition2")
 
         #move diagonal
-        if(current_score - diagonal_score == match_bonus):
+        if(current_score - diagonal_score == match_bonus and seq2[x_coordinate] == seq1[y_coordinate]):
             x_coordinate = x_coordinate - 1
             y_coordinate = y_coordinate - 1
-            print("Move diag1")
         elif(current_score - diagonal_score == mismatch_penalty):
             x_coordinate = x_coordinate - 1
             y_coordinate = y_coordinate - 1
-            print("Move diag2")
         #move up
         elif(current_score - upper_score == gap_penalty):
             y_coordinate = y_coordinate - 1
-            print("Move up")
+            aligned_seq2 = aligned_seq2[:x_coordinate] + "-" + aligned_seq2[x_coordinate:]
         #move left
         elif(current_score - left_score == gap_penalty):
             x_coordinate = x_coordinate - 1
-            print("Move left")
+            x_coordinate = x_coordinate - 1
+            aligned_seq1 = aligned_seq1[:y_coordinate] + "-" + aligned_seq2[y_coordinate:]
         else:
             print("An error has occured")
 
-        index+= 1
 
-
-'''TODO
-The traceback is working but I need to figure out where to add the gaps, current thoughts
-first add gaps to the shorter string, then replace print statements with
-<approiate seq> = <approiate seq>[:index] + "-" + <approiate seq> [index:]
-This will add gaps at position index
-'''
             
 def main():
-    print("Hello from main")
     dynamicAlignment( "-ACAGTA","-CAGC")
 
 if __name__ == '__main__': main()
