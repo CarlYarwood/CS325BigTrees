@@ -3,6 +3,20 @@ from Clade import Clade
 from Clade import Leaf 
 #only half done, feel under the weather, need to write the part of the method
 #that puts together the new score matrix
+def UPGMA(allignedSeqs):
+    currentCladesAndLeafs = []
+    for i in range(len(allignedSeqs)):
+        currentCladesAndLeafs.append(Leaf(i))
+    ScoreMatrix = buildInitialScoreMatrix(allignedSeqs)
+    for i in range(len(allignedSeqs)-1):
+        for c in scoreMatrix:
+            print(c)
+        temp = buildNextMatrix(scoreMatrix,CurrentCladesAndLeaves)
+        scoreMatrix = temp[0]
+        currentCladesAndLeaves = temp[1]
+        for c in scoreMatrix:
+            print(c)
+    return currentCladesAndLeaves
 def buildNextMatrix(scoreMatrix, CurrentCladesAndLeaves):
     minimum = scoreMatrix[0][1]
     row = 0
@@ -34,10 +48,13 @@ def buildNextMatrix(scoreMatrix, CurrentCladesAndLeaves):
 #is done
 def buildInitialScoreMatrix(allignedSeqs):
     scoreMatrix = []
+    count = 0
     for i in range(len(allignedSeqs)):
-        scoreMatrix = []
+        scoreMatrix.append([])
         for c in range(i,len(allignedSeqs)):
             scoreMatrix[i].append(k2pScore(allignedSeqs[i], allignedSeqs[c]))
+            print(count)
+            count = count+1
     return scoreMatrix
 
 
