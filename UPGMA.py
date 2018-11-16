@@ -1,23 +1,28 @@
 import numpy as np
 from Clade import Clade
 from Clade import Leaf
+import datetime
 from dynamic_sequence_evaluator import dynamicAlignment
 #only half done, feel under the weather, need to write the part of the method
 #that puts together the new score matrix
 def UPGMA(allignedSeqs):
     currentCladesAndLeafs = []
+    print(len(allignedSeqs))
+    print(datetime.datetime.now())
     for i in range(len(allignedSeqs)):
         currentCladesAndLeafs.append(Leaf(i))
     scoreMatrix = buildInitialScoreMatrix(allignedSeqs)
     for i in range(len(allignedSeqs)-1):
         print(i)
-        for c in scoreMatrix:
-            print(c)
+        print(datetime.datetime.now())
+        #for c in scoreMatrix:
+            #print(c)
         temp = buildNextMatrix(scoreMatrix,currentCladesAndLeaves)
         scoreMatrix = temp[0]
         currentCladesAndLeaves = temp[1]
-        for c in scoreMatrix:
-            print(c)
+        print(currentCladesAndLeaves.generateStringRep())
+        #for c in scoreMatrix:
+            #print(c)
     return currentCladesAndLeaves
 def buildNextMatrix(scoreMatrix, CurrentCladesAndLeaves):
     minimum = scoreMatrix[0][1]
@@ -54,7 +59,7 @@ def buildInitialScoreMatrix(allignedSeqs):
     for i in range(len(allignedSeqs)):
         scoreMatrix.append([])
         for c in range(i,len(allignedSeqs)):
-            temp = dynamicAlignment(allignedSeqs[i], allignedSeqs[c]);#remove when global alignment is added
+            temp = dynamicAlignment(allignedSeqs[i], allignedSeqs[c])#remove when global alignment is added
             scoreMatrix[i].append(k2pScore(temp[0], temp[1])) #replace temp[0] with allignedSeqs[i] and temp[1] with allignedSeqs[c] when global allignment is added
             print(count)
             count = count+1
@@ -66,8 +71,9 @@ def k2pScore(allignedSeq1, allignedSeq2):
     S = 0
     V = 0
     Gaps = 0
-    for i in range(len(allignedSeq1)):
-        if isTransition(allignedSeq1[i],allignedSeq2[i]):
+    print(f"1: {len(allignedSeq1)} 2: {len(allignedSeq2)}") 
+    for i in range(min(len(allignedSeq2), len(allignedSeq1))):
+        if isTransition(allignedSeq1[i],allignedSeq2[i]): # lol maybe just take the min when doing this?
             S = S + 1
         elif isTransversion(allignedSeq1[i],allignedSeq2[i]):
             V = V + 1

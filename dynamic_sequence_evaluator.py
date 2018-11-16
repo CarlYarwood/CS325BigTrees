@@ -130,7 +130,7 @@ def traceback(gene_comparison_matrix, seq1, seq2):
     traceback_value = gene_comparison_matrix[ y_coordinate]\
                       [x_coordinate]
     while True:
-        print("X_coordinate = " + str(x_coordinate) + " y_coordinate = " + str(y_coordinate))
+        #print("X_coordinate = " + str(x_coordinate) + " y_coordinate = " + str(y_coordinate))
         current_score = gene_comparison_matrix[y_coordinate][x_coordinate]
         
         if(x_coordinate != 0 and y_coordinate !=0):
@@ -178,7 +178,7 @@ def traceback(gene_comparison_matrix, seq1, seq2):
 
 
             
-def main():
-    dynamicAlignment( "-ACAGTA","-CAGC")
+#def main():
+    #dynamicAlignment( "-ACAGTA","-CAGC")
 
-if __name__ == '__main__': main()
+#if __name__ == '__main__': main()
