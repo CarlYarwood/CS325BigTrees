@@ -11,31 +11,45 @@ def globalAlign(strs):
         str0 = strs[i]
         str1 = strs[i+1]
         print("starting alignment")
-        temp = allignInParts(str0, str1)
+        temp = allignInParts(str0, str1,8)
         print("fixing previous strings")
         for c in previousStrings:
-            for k in temp[2]:
+            for k in reversed(temp[2]):
                 c = c[:k] + '-' + c[k:]
-        previousStrings.append(str0)
-        print(i)
+                print(len(c))
+        previousStrings.append(temp[0])
+        print(len(temp[0]))
+        print(len(previousStrings[0]))
+        str1 = temp[1]
     previousStrings.append(str1)
     return previousStrings
-def allignInParts(str1, str2):
+def allignInParts(str1, str2, recurse):
     num1 = int(len(str1)/2)
     num2 = int(len(str2)/2)
     str11 = str1[:num1]
     str12 = str1[num1:]
     str21 = str2[:num2]
     str22 = str2[num2:]
-    temp1 = twoStringAlign(str11,str21)
-    temp2 = twoStringAlign(str12,str22)
-    temp = []
-    temp.append(str(temp1[0]) + str(temp2[0]))
-    temp.append(str(temp1[1]) + str(temp2[1]))
-    for i in range(len(temp2[2])):
-        temp1[2].append( temp2[2][i] + num2)
-    temp.append(temp1[2])
-    return temp
+    if(recurse > 0):
+        temp1 = allignInParts(str11,str21, recurse -1)
+        temp2 = allignInParts(str12,str22, recurse - 1)
+        temp = []
+        temp.append(str(temp1[0]) + str(temp2[0]))
+        temp.append(str(temp1[1]) + str(temp2[1]))
+        for i in range(len(temp2[2])):
+            temp1[2].append( temp2[2][i] + num2)
+        temp.append(temp1[2])
+        return temp
+    else:
+        temp1 = twoStringAlign(str11,str21)
+        temp2 = twoStringAlign(str12,str22)
+        temp = []
+        temp.append(str(temp1[0]) + str(temp2[0]))
+        temp.append(str(temp1[1]) + str(temp2[1]))
+        for i in range(len(temp2[2])):
+            temp1[2].append( temp2[2][i] + num2)
+        temp.append(temp1[2])
+        return temp
         
 def twoStringAlign( str1, str2 ):
     workstr1 = "-" + str1
@@ -56,7 +70,6 @@ def twoStringAlign( str1, str2 ):
                                else( match_arr[ row ][ col ] + match_penalty
 							   ))]
             match_arr[ row + 1 ][ col + 1 ] = max( possibleChoices )
-    print("matrix made")
     return  traceBack(match_arr, workstr1, workstr2)
 
 def traceBack(dynamicArray, str1, str2):
@@ -68,28 +81,22 @@ def traceBack(dynamicArray, str1, str2):
     editPlacesRow = []
     editPlacesCol = []
     while(keepGoing):
-        print("in loop")
         if ((str1[row] == str2[col]) and (dynamicArray[row - 1][col - 1] == dynamicArray[row][col] - 5)) or((str1[row] != str2[col]) and (dynamicArray[row -1][col - 1] == dynamicArray[row][col] + 4)):
             newStr1 = str1[row] + newStr1
             newStr2 = str2[col] + newStr2
             row = row - 1
             col = col - 1
-            print("in if 1")
         elif dynamicArray[row - 1][col] == dynamicArray[row][col] + 7:
             newStr1 = str1[row] + newStr1
             newStr2 = "-" + newStr2
             editPlacesRow.append(row)
             row = row - 1
-            print("in if 2")
         elif dynamicArray[row][col - 1] == dynamicArray[row][col] + 7:
             newStr1 = "-" + newStr1
             newStr2 = str2[col] + newStr2
             col = col -1
-            print("in if 3")
         if row == 0 and col == 0:
             keepGoing = False
-            print("in if 4")
     ret = [newStr1, newStr2, editPlacesRow]
-    print(" trace back done")
     return ret
     
