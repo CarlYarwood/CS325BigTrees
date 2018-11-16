@@ -18,7 +18,7 @@ def globalAlign(strs):
                 c = c[:k] + '-' + c[k:]
         previousStrings.append(str0)
         print(i)
-    prevousStrings.append(str1)
+    previousStrings.append(str1)
     return previousStrings
 def allignInParts(str1, str2):
     num1 = int(len(str1)/2)
