@@ -11,7 +11,7 @@ class Clade:
         return type(self.child2)
     def generateStringRep(self):
         stringRep = "(" + self.child1.generateStringRep() + "," + \
-        self.child2.generateStringRep() + ")"
+         str(self.distance) + "," + self.child2.generateStringRep() + ")"
         return stringRep
     
 class Conf_Clade():
