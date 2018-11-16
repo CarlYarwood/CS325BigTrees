@@ -8,11 +8,12 @@ def UPGMA(allignedSeqs):
     currentCladesAndLeafs = []
     for i in range(len(allignedSeqs)):
         currentCladesAndLeafs.append(Leaf(i))
-    ScoreMatrix = buildInitialScoreMatrix(allignedSeqs)
+    scoreMatrix = buildInitialScoreMatrix(allignedSeqs)
     for i in range(len(allignedSeqs)-1):
+        print(i)
         for c in scoreMatrix:
             print(c)
-        temp = buildNextMatrix(scoreMatrix,CurrentCladesAndLeaves)
+        temp = buildNextMatrix(scoreMatrix,currentCladesAndLeaves)
         scoreMatrix = temp[0]
         currentCladesAndLeaves = temp[1]
         for c in scoreMatrix:
@@ -90,9 +91,6 @@ def isTransversion(base1, base2):
     else:
         return False
     return
-
-
-
 
 def isPurine(base):
     if base.upper() == "A" or base.upper() == "G":

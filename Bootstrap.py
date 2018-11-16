@@ -17,6 +17,7 @@ Nov 12 2018
 import random
 from Clade import Clade
 from Clade import Leaf
+from collections import Counter
 '''
 get_bootstrap_list - takes in an array of sequences that have already been aligned
 and samples accordingly until we have a new set of sequences the same 
@@ -98,14 +99,47 @@ def split(clade):
     print()
     
 
-
-
 '''
 Compare_Clades - takes in two clades
 - one clade is a confidence clade
 - The other clade is a normal clade
 
+The function mutates conf value levels of the confidence clade and 
+doesn't return anything. 
 '''
+def compare_clades(conf_clade, clade):
+    # TODO write check_clade_similarity 
+    if check_clade_similarity(conf_clade, clade):
+        conf_clade.conf_val += 1
+
+        compare_clades(conf_clade.child1, clade.child1)
+        compare_clades(conf_clade.child2, clade.child2)
+        # when 3 of the leaves are not matching, return false
+    else:
+        compare_clades(conf_clade.child1, clade.child2)
+        compare_clades(conf_clade.child2, clade.child1)
+        compare_clades(conf_clade.child1, clade.child2)
+        compare_clades(conf_clade.child2, clade.child1)
+    
+
+    print()
+
+'''
+check_clade_similarity - checks if two clades have the same elements on
+the same levels 
+
+-clade1 is 
+
+
+-Returns True or False
+'''
+def check_clade_similarity(conf_clade, clade):
+    #sim = False
+    conf_clade_str = conf_clade.generateStringRep()
+    clade_str = clade.generateStringRep()
+
+    if conf_clade_str == clade_str:
+        return True    
 
 
 

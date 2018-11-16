@@ -41,7 +41,7 @@ def dynamicAlignment(seq1, seq2):
     traceback_value = traceback_data[0]
     aligned_seq1 = traceback_data[1]
     aligned_seq2 = traceback_data[2]
-    return [aligned_seq1, alignedseq2]
+    return [aligned_seq1, aligned_seq2]
 
 
 '''
